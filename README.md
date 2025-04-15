@@ -2,19 +2,21 @@
 
 ## 🚀 Project Overview
 
-MemoTag is focused on developing cutting-edge tools for early detection of cognitive decline through voice-based intelligence. Their mission is to provide non-invasive, accessible, and scalable solutions that empower individuals and healthcare providers with early insights into neurological health. This aligns with the growing need for proactive approaches to mental health monitoring, especially in aging populations.
+MemoTag is focused on developing cutting-edge tools for early detection of cognitive decline through voice-based intelligence. Their mission is to provide non-invasive, accessible, and scalable solutions that empower individuals and healthcare providers with early insights into neurological health. This aligns with the growing need for proactive approaches to mental health monitoring, especially in aging populations.<br>
 This project is a proof-of-concept (PoC) prototype built for MemoTag's speech intelligence module. It aims to detect early signs of cognitive impairment by analyzing patterns in spoken language using a combination of acoustic, linguistic, and semantic features. By fusing speech signal processing with natural language processing (NLP), the system identifies potential markers that correlate with cognitive stress or decline.
-To address the MemoTag AI/ML task of detecting early cognitive decline using voice data, we developed a comprehensive pipeline integrating acoustic, linguistic, and semantic features coupled with both unsupervised and supervised learning methods. Audio samples were first processed using librosa and parselmouth to extract detailed acoustic markers including pitch, jitter, shimmer, duration, intensity, and MFCCs. Simulated transcripts were analyzed to derive lexical diversity (TTR), hesitation frequency, recall-related language patterns, and syntactic complexity. Semantic coherence was evaluated using sentence embeddings from the all-MiniLM-L6-v2 model and cosine similarity across adjacent sentences, which reflects logical progression—a known issue in cognitive impairment. Feature vectors combining these modalities were standardized and analyzed using PCA for dimensionality reduction. KMeans clustering enabled unsupervised grouping of samples, revealing potential anomalies. Simultaneously, a Random Forest Classifier trained on labeled data achieved interpretable performance insights and importance ranking of features. Among all features, semantic coherence, pitch variation, jitter, MFCCs, and hesitation frequency emerged as most indicative of cognitive anomalies. This hybrid approach provides both anomaly detection and classification capabilities, aligning with the interpretability and domain relevance criteria outlined in the task. The system can be expanded with real patient data, and future steps include incorporating ASR for dynamic transcript generation, longitudinal tracking, and deploying as an API to return real-time cognitive risk scores
+To address the MemoTag AI/ML task of detecting early cognitive decline using voice data, we developed a comprehensive pipeline integrating acoustic, linguistic, and semantic features coupled with both unsupervised and supervised learning methods. **Audio samples were first processed using librosa and parselmouth to extract detailed acoustic markers including pitch, jitter, shimmer, duration, intensity, and MFCCs. Simulated transcripts were analyzed to derive lexical diversity (TTR), hesitation frequency, recall-related language patterns, and syntactic complexity.** Semantic coherence was evaluated using sentence embeddings from the all-MiniLM-L6-v2 model and cosine similarity across adjacent sentences, which reflects logical progression—a known issue in cognitive impairment. Feature vectors combining these modalities were standardized and analyzed using PCA for dimensionality reduction. KMeans clustering enabled unsupervised grouping of samples, revealing potential anomalies. Simultaneously, a Random Forest Classifier trained on labeled data achieved interpretable performance insights and importance ranking of features. **Among all features, semantic coherence, pitch variation, jitter, MFCCs, and hesitation frequency emerged as most indicative of cognitive anomalies**This hybrid approach provides both anomaly detection and classification capabilities, aligning with the interpretability and domain relevance criteria outlined in the task. **The system can be expanded with real patient data, and future steps include incorporating ASR for dynamic transcript generation, longitudinal tracking, and deploying as an API to return real-time cognitive risk scores**
 
 ---
 
 ## 🧩 Pipeline Stages
 
 The end-to-end pipeline is designed to process raw audio recordings and extract meaningful signals across multiple dimensions. Below is a detailed breakdown of each stage:
+
 ### Stage 1: Audio Input & Preprocessing
 This stage involves reading in the raw .wav audio files. The system ensures that these files are valid, properly sampled, and prepped for downstream analysis. Audio normalization and silence trimming can also be introduced here to improve consistency across samples. Each audio clip serves as a standalone unit for analysis, simulating realistic, short voice responses.
 
-## 🧩 Stage 1: Imports and Setup
+
+
 ```python
 import os
 import numpy as np
@@ -45,13 +47,22 @@ labels = [0] * (len(wav_files) // 2) + [1] * (len(wav_files) - len(wav_files) //
 dummy_transcripts = ["This is a sample sentence for testing. I am fine." for _ in wav_files]
 
 ```
+
+
 ### Stage 2: Acoustic Feature Extraction
 At this stage, we extract objective characteristics of the speaker's voice using Parselmouth (Praat interface) and Librosa.<br>
 •	**Pitch (Fundamental Frequency)**: Variability in pitch can indicate loss of expressive control.<br>
+
 •	**Jitter and Shimmer**: Represent microinstabilities in frequency and amplitude. High values often correlate with neurological impairments.<br>
+
 •	**Intensity**: Average loudness of speech; low energy may suggest cognitive fatigue or disengagement.<br>
+
 •	**Duration**: Total length of the recording to detect signs of delayed or slowed responses.<br>
+
 •	**MFCCs (Mel-Frequency Cepstral Coefficients)**: 13 coefficients capturing the spectral envelope of speech. Lower coefficients represent coarse spectral features, higher ones capture finer timbral textures. These features are widely used in speech pathology detection.<br>
+
+
+
 ```python
 def extract_acoustic_features(file_path):
     snd = parselmouth.Sound(file_path)
@@ -86,22 +97,33 @@ def semantic_coherence(text):
     sim_scores = [util.cos_sim(embeddings[i], embeddings[i+1]).item() for i in range(len(sents)-1)]
     return np.mean(sim_scores)
 ```
-Stage 3 : Transcript-Based Text Feature Extraction
-For this PoC, we used dummy transcripts to simulate responses. From these, we computed features designed to reflect cognitive load:<br>
-•	Type-Token Ratio (TTR): Measures lexical diversity, which tends to decline with impairment.<br>
-•	Hesitation Markers: Counts occurrences of filler words (e.g., “uh”, “um”)—higher rates may signal processing delays.<br>
-•	Recall Issues: Tallies vague or non-specific words like “thing” or “stuff,” suggesting memory or word retrieval difficulty.<br>
-•	Average Words per Sentence: Shorter, fragmented sentences may indicate reduced linguistic complexity.<br>
-```python
 
-Stage 4: Semantic Coherence Scoring
+
+## Stage 3 : Transcript-Based Text Feature Extraction
+
+For this PoC, we used dummy transcripts to simulate responses. From these, we computed features designed to reflect cognitive load:<br>
+•	**Type-Token Ratio (TTR)**: Measures lexical diversity, which tends to decline with impairment.<br>
+
+•	**Hesitation Markers**: Counts occurrences of filler words (e.g., “uh”, “um”)—higher rates may signal processing delays.<br>
+
+•	**Recall Issues**: Tallies vague or non-specific words like “thing” or “stuff,” suggesting memory or word retrieval difficulty.<br>
+
+•	**Average Words per Sentence**: Shorter, fragmented sentences may indicate reduced linguistic complexity.<br>
+
+
+## Stage 4: Semantic Coherence Scoring
 To assess how logically ideas are connected, we used sentence embeddings from the all-MiniLM-L6-v2 model. Each transcript is split into sentences, embedded, and the cosine similarity between consecutive sentences is calculated. The average similarity score reflects coherence:<br>
+
 •	**Higher Coherence** : Indicates clear, organized thinking.<br>
-•	Lower Coherence: May point to tangential or disorganized thoughts—common in early cognitive decline.
+
+•	**Lower Coherence**: May point to tangential or disorganized thoughts—common in early cognitive decline.
+
 
 
 ## Stage 5: Feature Consolidation
+
 All extracted features are combined into a structured DataFrame. Each row represents one audio sample and includes both acoustic and text-based metrics. Any missing values are imputed using the mean of that feature across the dataset to maintain dataset integrity and avoid model bias.<br>
+
 ```python
 features = []
 for i in tqdm(range(len(wav_files)), desc="Processing Files", ncols=100):
@@ -130,18 +152,34 @@ for i in tqdm(range(len(wav_files)), desc="Processing Files", ncols=100):
 features_df = pd.DataFrame(features)
 features_df.to_csv("combined_features.csv", index=False)
 ```
+
 ## Stage 6: Machine Learning
+
 We employed two learning paradigms:<br>
+
+
 **Supervised Learning**:<br>
 •	**Model**: Random Forest Classifier<br>
+
 •	**Reason**: High interpretability, good handling of mixed-type features, and internal feature ranking.<br>
+
 •	**Labels**: 0 for control group, 1 for simulated cognitive impairment.<br>
+
 •	**Output**: Predicts likelihood of impairment; reports include precision, recall, and F1 scores.<br>
+
+
 ### Unsupervised Learning<br>
+
 •	**Techniques Used**: Principal Component Analysis (PCA) to reduce dimensionality, followed by KMeans clustering.<br>
+
 •	**Reason**: Allows us to visualize and discover natural groupings without using labels, useful for screening and anomaly detection.<br>
+
 •	**Primary Inputs**: MFCCs and acoustic features.<br>
+
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
+
+
+
 ```python
 X = features_df.drop(columns=["file", "label"])
 X = X.fillna(X.mean())
@@ -177,6 +215,7 @@ plt.show()
 
 ## 📈 Key Results
 
+
 - **Top Features**: The classification report showed promising results for a synthetic dataset.<br> Acoustic features like jitter and shimmer, combined with NLP metrics like hesitation counts and semantic coherence, provided a strong signal for classification.<br> The PCA clustering also visually demonstrated separability between groups, confirming that the features are meaningful and relevant.
   
 
@@ -185,11 +224,11 @@ plt.show()
 ## 🔮 Future Improvements
 
 This prototype lays the groundwork for a clinically relevant voice diagnostic system. Several enhancements can evolve it further:<br>
-•	Real Transcripts: Integrate Whisper or another ASR model for authentic linguistic input.<br>
-•	Clinical Data: Apply the pipeline to labeled datasets such as DementiaBank.<br>
-•	Time-Series Features: Add dynamic speech metrics like speech rate over time or pausing patterns.<br>
-•	Model Tuning: Test gradient boosting or transformer-based classifiers for performance lift.<br>
-•	API Deployment: Wrap the full pipeline into an API function that accepts audio and returns a risk score or classification.<br>
+•	**Real Transcripts**: Integrate Whisper or another ASR model for authentic linguistic input.<br>
+•	**Clinical Data**: Apply the pipeline to labeled datasets such as DementiaBank.<br>
+•	**Time-Series Features**: Add dynamic speech metrics like speech rate over time or pausing patterns.<br>
+•	**Model Tuning**: Test gradient boosting or transformer-based classifiers for performance lift.<br>
+•	**API Deploymen**t: Wrap the full pipeline into an API function that accepts audio and returns a risk score or classification.<br>
 
 
 
@@ -208,8 +247,4 @@ This prototype lays the groundwork for a clinically relevant voice diagnostic sy
 
 ---
 
-## 🧠 Author
 
-**Joshua Thomas**  
-AI/ML | April 2025  
-GitHub: [Joshuathomas18](https://github.com/Joshuathomas18)
