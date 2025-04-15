@@ -15,6 +15,10 @@
 
 To address the MemoTag AI/ML task of detecting early cognitive decline using voice data, we developed a comprehensive pipeline integrating acoustic, linguistic, and semantic features coupled with both unsupervised and supervised learning methods. **Audio samples were first processed using librosa and parselmouth to extract detailed acoustic markers including pitch, jitter, shimmer, duration, intensity, and MFCCs. Simulated transcripts were analyzed to derive lexical diversity (TTR), hesitation frequency, recall-related language patterns, and syntactic complexity.** Semantic coherence was evaluated using sentence embeddings from the all-MiniLM-L6-v2 model and cosine similarity across adjacent sentences, which reflects logical progression—a known issue in cognitive impairment. Feature vectors combining these modalities were standardized and analyzed using PCA for dimensionality reduction. KMeans clustering enabled unsupervised grouping of samples, revealing potential anomalies. Simultaneously, a Random Forest Classifier trained on labeled data achieved interpretable performance insights and importance ranking of features. **Among all features, semantic coherence, pitch variation, jitter, MFCCs, and hesitation frequency emerged as most indicative of cognitive anomalies**This hybrid approach provides both anomaly detection and classification capabilities, aligning with the interpretability and domain relevance criteria outlined in the task. **The system can be expanded with real patient data, and future steps include incorporating ASR for dynamic transcript generation, longitudinal tracking, and deploying as an API to return real-time cognitive risk scores**
 
+## Dataset
+
+To make the model more robust and competitive, we propose integrating data from the **Mozilla Common Voice project**. This open-source dataset contains a wide range of anonymized speech recordings across various languages, accents, and age groups. By applying our pipeline to these diverse real-world samples, we can **test the system’s generalizability, improve model robustness, and simulate realistic variability in cognitive patterns**. With suitable preprocessing and transcript simulation, **Common Voice data can act as a powerful proxy for early-stage validation before transitioning to clinical-grade datasets**.
+
 ---
 
 ## 🧩 Pipeline Stages
@@ -213,7 +217,7 @@ plt.show()
 ## 📈 Key Results
 
 
-- **Top Features**: The classification report showed promising results for a synthetic dataset.<br> Acoustic features like jitter and shimmer, combined with NLP metrics like hesitation counts and semantic coherence, provided a strong signal for classification.<br> The PCA clustering also visually demonstrated separability between groups, confirming that the features are meaningful and relevant.
+- **Top Features**: The classification report showed promising results for a synthetic dataset.<br> **Acoustic features like jitter and shimmer, combined with NLP metrics like hesitation counts and semantic coherence, provided a strong signal for classification**.<br> The **PCA clustering** also visually demonstrated **separability between groups, confirming that the features are meaningful and relevant**.
   
 ![Model Output](features.png)
 
