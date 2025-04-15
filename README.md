@@ -133,7 +133,7 @@ To assess how logically ideas are connected, we used sentence embeddings from th
 
 All extracted features are combined into a structured DataFrame. Each row represents one audio sample and includes both acoustic and text-based metrics. Any missing values are imputed using the mean of that feature across the dataset to maintain dataset integrity and avoid model bias.<br>
 
-![Model Output](Screenshot 2025-04-15 201421.png)
+![Model Output](features.png)
 
 
 ```python
@@ -164,7 +164,7 @@ for i in tqdm(range(len(wav_files)), desc="Processing Files", ncols=100):
 features_df = pd.DataFrame(features)
 features_df.to_csv("combined_features.csv", index=False)
 ```
-![Model Output](Screenshot 2025-04-15 201421.png)
+![Model Output](results.png)
 ## Stage 6: Machine Learning
 
 We employed two learning paradigms:<br>
@@ -191,7 +191,7 @@ We employed two learning paradigms:<br>
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
 
 
-![Model Output](Screenshot 2025-04-15 201435.png)
+![Model Output](PCA.png)
 
 
 ```python
@@ -232,7 +232,7 @@ plt.show()
 
 - **Top Features**: The classification report showed promising results for a synthetic dataset.<br> Acoustic features like jitter and shimmer, combined with NLP metrics like hesitation counts and semantic coherence, provided a strong signal for classification.<br> The PCA clustering also visually demonstrated separability between groups, confirming that the features are meaningful and relevant.
   
-![Model Output](Screenshot 2025-04-15 201428.png)
+![Model Output](features.png)
 
 ---
 
