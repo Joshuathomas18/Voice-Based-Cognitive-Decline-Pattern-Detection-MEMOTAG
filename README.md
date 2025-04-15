@@ -1,4 +1,5 @@
-# 🧠 Voice-Based Cognitive Decline Pattern Detection
+<h1>🧠 Cognitive Impairment Detection <img src="assets/logo.png" alt="Logo" width="40" style="vertical-align: middle;"/></h1>
+
 
 ## 🚀 Project Overview
 
