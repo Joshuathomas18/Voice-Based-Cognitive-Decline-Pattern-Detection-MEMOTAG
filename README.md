@@ -133,6 +133,9 @@ To assess how logically ideas are connected, we used sentence embeddings from th
 
 All extracted features are combined into a structured DataFrame. Each row represents one audio sample and includes both acoustic and text-based metrics. Any missing values are imputed using the mean of that feature across the dataset to maintain dataset integrity and avoid model bias.<br>
 
+![Model Output](Screenshot 2025-04-15 201421.png)
+
+
 ```python
 features = []
 for i in tqdm(range(len(wav_files)), desc="Processing Files", ncols=100):
