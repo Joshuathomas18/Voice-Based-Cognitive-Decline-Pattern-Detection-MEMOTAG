@@ -61,13 +61,9 @@ dummy_transcripts = ["This is a sample sentence for testing. I am fine." for _ i
 ### Stage 2: Acoustic Feature Extraction
 At this stage, we extract objective characteristics of the speaker's voice using Parselmouth (Praat interface) and Librosa.<br>
 •	**Pitch (Fundamental Frequency)**: Variability in pitch can indicate loss of expressive control.<br>
-
 •	**Jitter and Shimmer**: Represent microinstabilities in frequency and amplitude. High values often correlate with neurological impairments.<br>
-
 •	**Intensity**: Average loudness of speech; low energy may suggest cognitive fatigue or disengagement.<br>
-
 •	**Duration**: Total length of the recording to detect signs of delayed or slowed responses.<br>
-
 •	**MFCCs (Mel-Frequency Cepstral Coefficients)**: 13 coefficients capturing the spectral envelope of speech. Lower coefficients represent coarse spectral features, higher ones capture finer timbral textures. These features are widely used in speech pathology detection.<br>
 
 
@@ -112,11 +108,8 @@ def semantic_coherence(text):
 
 For this PoC, we used dummy transcripts to simulate responses. From these, we computed features designed to reflect cognitive load:<br>
 •	**Type-Token Ratio (TTR)**: Measures lexical diversity, which tends to decline with impairment.<br>
-
 •	**Hesitation Markers**: Counts occurrences of filler words (e.g., “uh”, “um”)—higher rates may signal processing delays.<br>
-
 •	**Recall Issues**: Tallies vague or non-specific words like “thing” or “stuff,” suggesting memory or word retrieval difficulty.<br>
-
 •	**Average Words per Sentence**: Shorter, fragmented sentences may indicate reduced linguistic complexity.<br>
 
 
@@ -124,7 +117,6 @@ For this PoC, we used dummy transcripts to simulate responses. From these, we co
 To assess how logically ideas are connected, we used sentence embeddings from the all-MiniLM-L6-v2 model. Each transcript is split into sentences, embedded, and the cosine similarity between consecutive sentences is calculated. The average similarity score reflects coherence:<br>
 
 •	**Higher Coherence** : Indicates clear, organized thinking.<br>
-
 •	**Lower Coherence**: May point to tangential or disorganized thoughts—common in early cognitive decline.
 
 
@@ -132,8 +124,6 @@ To assess how logically ideas are connected, we used sentence embeddings from th
 ## Stage 5: Feature Consolidation
 
 All extracted features are combined into a structured DataFrame. Each row represents one audio sample and includes both acoustic and text-based metrics. Any missing values are imputed using the mean of that feature across the dataset to maintain dataset integrity and avoid model bias.<br>
-
-![Model Output](features.png)
 
 
 ```python
@@ -172,22 +162,15 @@ We employed two learning paradigms:<br>
 
 **Supervised Learning**:<br>
 •	**Model**: Random Forest Classifier<br>
-
 •	**Reason**: High interpretability, good handling of mixed-type features, and internal feature ranking.<br>
-
 •	**Labels**: 0 for control group, 1 for simulated cognitive impairment.<br>
-
 •	**Output**: Predicts likelihood of impairment; reports include precision, recall, and F1 scores.<br>
-
 
 ### Unsupervised Learning<br>
 
 •	**Techniques Used**: Principal Component Analysis (PCA) to reduce dimensionality, followed by KMeans clustering.<br>
-
 •	**Reason**: Allows us to visualize and discover natural groupings without using labels, useful for screening and anomaly detection.<br>
-
 •	**Primary Inputs**: MFCCs and acoustic features.<br>
-
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
 
 
