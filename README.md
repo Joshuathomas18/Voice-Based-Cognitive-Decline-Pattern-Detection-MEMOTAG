@@ -188,7 +188,7 @@ We employed two learning paradigms:<br>
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
 
 ![Model Output](Screenshot 2025-04-15 201421.png)
-![Model Output](assets/cluster_plot.png)
+![Model Output](Screenshot 2025-04-15 201435.png)
 
 
 ```python
@@ -229,6 +229,7 @@ plt.show()
 
 - **Top Features**: The classification report showed promising results for a synthetic dataset.<br> Acoustic features like jitter and shimmer, combined with NLP metrics like hesitation counts and semantic coherence, provided a strong signal for classification.<br> The PCA clustering also visually demonstrated separability between groups, confirming that the features are meaningful and relevant.
   
+![Model Output](Screenshot 2025-04-15 201435.png)
 
 ---
 
