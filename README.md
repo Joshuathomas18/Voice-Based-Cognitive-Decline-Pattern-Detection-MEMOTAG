@@ -1,10 +1,18 @@
-<h1>🧠 Cognitive Impairment Detection <img src="assets/logo.png" alt="Logo" width="40" style="vertical-align: middle;"/></h1>
+<p align="right">
+  <img src="memotag-logo.svg" alt="Logo" width="150">
+</p>
+
+<h1>🧠 Voice-Based Cognitive Decline Pattern Detection</h1>
+
 
 
 ## 🚀 Project Overview
 
-MemoTag is focused on developing cutting-edge tools for early detection of cognitive decline through voice-based intelligence. Their mission is to provide non-invasive, accessible, and scalable solutions that empower individuals and healthcare providers with early insights into neurological health. This aligns with the growing need for proactive approaches to mental health monitoring, especially in aging populations.<br>
-This project is a proof-of-concept (PoC) prototype built for MemoTag's speech intelligence module. It aims to detect early signs of cognitive impairment by analyzing patterns in spoken language using a combination of acoustic, linguistic, and semantic features. By fusing speech signal processing with natural language processing (NLP), the system identifies potential markers that correlate with cognitive stress or decline.
+**MemoTag is focused on developing cutting-edge tools for early detection of cognitive decline through voice-based intelligence**. Their mission is to provide non-invasive, accessible, and scalable solutions that empower individuals and healthcare providers with early insights into neurological health. This aligns with the growing need for proactive approaches to mental health monitoring, especially in aging populations.<br>
+**This project is a proof-of-concept (PoC) prototype built for MemoTag's speech intelligence module**. It aims to detect early signs of cognitive impairment by analyzing patterns in spoken language using a combination of acoustic, linguistic, and semantic features. By fusing speech signal processing with **natural language processing (NLP), the system identifies potential markers that correlate with cognitive stress or decline**.
+
+![Model Output](signs-of-dementia-eng.png)
+
 To address the MemoTag AI/ML task of detecting early cognitive decline using voice data, we developed a comprehensive pipeline integrating acoustic, linguistic, and semantic features coupled with both unsupervised and supervised learning methods. **Audio samples were first processed using librosa and parselmouth to extract detailed acoustic markers including pitch, jitter, shimmer, duration, intensity, and MFCCs. Simulated transcripts were analyzed to derive lexical diversity (TTR), hesitation frequency, recall-related language patterns, and syntactic complexity.** Semantic coherence was evaluated using sentence embeddings from the all-MiniLM-L6-v2 model and cosine similarity across adjacent sentences, which reflects logical progression—a known issue in cognitive impairment. Feature vectors combining these modalities were standardized and analyzed using PCA for dimensionality reduction. KMeans clustering enabled unsupervised grouping of samples, revealing potential anomalies. Simultaneously, a Random Forest Classifier trained on labeled data achieved interpretable performance insights and importance ranking of features. **Among all features, semantic coherence, pitch variation, jitter, MFCCs, and hesitation frequency emerged as most indicative of cognitive anomalies**This hybrid approach provides both anomaly detection and classification capabilities, aligning with the interpretability and domain relevance criteria outlined in the task. **The system can be expanded with real patient data, and future steps include incorporating ASR for dynamic transcript generation, longitudinal tracking, and deploying as an API to return real-time cognitive risk scores**
 
 ---
@@ -179,6 +187,8 @@ We employed two learning paradigms:<br>
 
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
 
+![Model Output](assets/cluster_plot.png)
+![Model Output](assets/cluster_plot.png)
 
 
 ```python
