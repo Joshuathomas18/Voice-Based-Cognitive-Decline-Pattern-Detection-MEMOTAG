@@ -187,7 +187,7 @@ We employed two learning paradigms:<br>
 
 •	**Output**: Cluster assignments for each sample, visualized using scatter plots in PCA space.<br>
 
-![Model Output](assets/cluster_plot.png)
+![Model Output](Screenshot 2025-04-15 201421.png)
 ![Model Output](assets/cluster_plot.png)
 
 
