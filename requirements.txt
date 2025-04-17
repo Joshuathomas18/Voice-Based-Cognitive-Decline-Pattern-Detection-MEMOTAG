@@ -8,3 +8,4 @@ praat-parselmouth
 nltk
 sentence-transformers
 joblib
+huggingface_hub[hf_xet]
